@@ -16,9 +16,19 @@
                 </a>
             </div>
 
-            <div class="mt-8 md:mt-0">
-                <a href="/" class="text-xs font-bold uppercase">Home Page</a>
+            <div class="mt-8 md:mt-0 flex items-center">
+                @guest
+                    <a href="/register" class="text-s font-bold uppercase">Register</a>
+                    <a href="/login" class="ml-3 text-s font-bold uppercase">Log in</a>
+                @else
+                    <span class="text-xs font-bold uppercase">Welcome Back, {{ auth()->user()->name }}</span>
 
+                    <form method="POST" action="/logout" class="text-xs font-semibold text-blue-500 ml-6">
+                        @csrf
+
+                        <button type="submit">Logout</button>
+                    </form>
+                @endguest
                 <a href="#" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
                     Subscribe for Updates
                 </a>
@@ -42,7 +52,7 @@
                             </label>
 
                             <input id="email" type="text" placeholder="Your email address"
-                                   class="lg:bg-transparent py-2 lg:py-0 pl-4 focus-within:outline-none">
+                                class="lg:bg-transparent py-2 lg:py-0 pl-4 focus-within:outline-none">
                         </div>
 
                         <button type="submit"
@@ -55,4 +65,14 @@
             </div>
         </footer>
     </section>
+    @if (session()->has('success'))
+        <div x-data="{show: true}"
+            x-init="setTimeout(() => show = false, 4000)"
+            x-show="show" x-transition
+        class="fixed bg-blue-500 text-white py-2 px-4 rounded-xl bottom-3 right-3 text-sm"
+        
+        >
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
 </body>
